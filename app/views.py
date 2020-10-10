@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-from flask import Flask, jsonify, make_response
+from app import app
+from Flask import jsonify, make_response, render_template
 from pymongo import MongoClient
 import json
 mongo_client = MongoClient('95.181.230.223', 2717, username='dodo_user', password='8K.b>#Jp49:;jUA+')
@@ -7,7 +7,9 @@ db = mongo_client.mobile_app
 food = db.food
 
 
-
+@app.route('/')
+def home()
+    return <h1>Hello wrold!</h1>
 @app.route('/food')
 def index():
     users_list = []
