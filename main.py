@@ -26,4 +26,4 @@ def user(name):
     return render_template('user.html', name=name)
 
 
-serve(app, host='0.0.0.0', port=8000)
+serve(app, host='95.181.230.223', port=8000)
