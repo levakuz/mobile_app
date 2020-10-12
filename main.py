@@ -1,6 +1,7 @@
 
 from flask import jsonify, make_response, render_template, Flask
 from pymongo import MongoClient
+from waitress import serve
 import json
 mongo_client = MongoClient('95.181.230.223', 2717, username='dodo_user', password='8K.b>#Jp49:;jUA+')
 db = mongo_client.mobile_app
@@ -25,4 +26,4 @@ def user(name):
     return render_template('user.html', name=name)
 
 
-app.run(host="0.0.0.0")
+serve(app, host='0.0.0.0', port=8000)
