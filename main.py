@@ -9,6 +9,7 @@ food = db.food
 categories = db.categories
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
     return "<h1>Hello wrold!</h1>"
@@ -21,15 +22,13 @@ def index():
         users_list.append(user)
     return jsonify(users_list)
 
+
 @app.route('/categories')
-def index():
-    users_list = []
-    for user in categories.find({}, projection={'_id': False}):
-        users_list.append(user)
-    return jsonify(users_list)
+def show_categories():
+    categories_list = []
+    for categorie in categories.find({}, projection={'_id': False}):
+        categories_list.append(categorie)
+    return jsonify(categories_list)
 
 
-
-
-
-serve(app, host='95.181.230.223', port=8000)
+serve(app, host='0.0.0.0', port=8000)
