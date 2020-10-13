@@ -7,6 +7,7 @@ mongo_client = MongoClient('95.181.230.223', 2717, username='dodo_user', passwor
 db = mongo_client.mobile_app
 food = db.food
 categories = db.categories
+banners = db.banners
 app = Flask(__name__)
 
 
@@ -29,6 +30,13 @@ def show_categories():
     for categorie in categories.find({}, projection={'_id': False}):
         categories_list.append(categorie)
     return jsonify(categories_list)
+
+@app.route('/banners')
+def show_banners():
+    banners_list = []
+    for banner in banners.find({}, projection={'_id': False}):
+        banners_list.append(banner)
+    return jsonify(banners_list)
 
 
 serve(app, host='0.0.0.0', port=8000)
