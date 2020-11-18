@@ -46,7 +46,7 @@ def login(username, password):
     for user in users.find({'login':username}):
         print(user)
         if user is None:
-            return 'bad request!', 400
+            return 'false username'
         if user['password'] == password:
             return user['token']
         else:
