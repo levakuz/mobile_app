@@ -43,14 +43,16 @@ def show_banners():
 
 @app.route('/login/<username>/<password>')
 def login(username, password):
-    for user in users.find({'login':username}):
-        print(user)
-        if user is None:
-            return 'false username'
-        if user['password'] == password:
-            return user['token']
-        else:
-            return 'false password'
+    if users.find_one({'login':username}) is not None:
+        for user in users.find({'login':username}):
+            print(user)
+            if user['password'] == password:
+                return user['token']
+            elif user['password'] != password:
+                return 'false password'
+
+    else:
+        return 'false username'
 
 
 serve(app, host='0.0.0.0', port=8000)
