@@ -8,6 +8,7 @@ db = mongo_client.mobile_app
 food = db.food
 categories = db.categories
 banners = db.banners
+users = db.users
 app = Flask(__name__)
 
 
@@ -31,12 +32,25 @@ def show_categories():
         categories_list.append(categorie)
     return jsonify(categories_list)
 
+
 @app.route('/banners')
 def show_banners():
     banners_list = []
     for banner in banners.find({}, projection={'_id': False}):
         banners_list.append(banner)
     return jsonify(banners_list)
+
+
+@app.route('/login/<username>/<password>')
+def login(username, password):
+    for user in users.find({'login':username}):
+        print(user)
+        if user is None:
+            return 'bad request!', 400
+        if user['password'] == password:
+            return user['token']
+        else:
+            return 'false password'
 
 
 serve(app, host='0.0.0.0', port=8000)
