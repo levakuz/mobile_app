@@ -13,7 +13,9 @@ users = db.users
 orders = db.orders
 app = Flask(__name__)
 
-order_number  = 0
+order_number = 0
+
+
 @app.route('/')
 def home():
     return "<h1>Hello wrold!</h1>"
@@ -62,12 +64,13 @@ def make_order(token):
     global order_number
     order_number += 1
     print(order_number)
+    str_order = str(order_number)
     if users.find_one({'token': token}) is not None:
-        if orders.find_one({'order': order_number, 'user': token, 'status':"1"}, projection={'_id': False}) is None:
-            new_order = {'order': order_number, 'user': token, 'time': datetime.strftime(datetime.now(), "%H:%M:%S"),
+        if orders.find_one({'order': str_order, 'user': token, 'status':"1"}, projection={'_id': False}) is None:
+            new_order = {'order': str_order, 'user': token, 'time': datetime.strftime(datetime.now(), "%H:%M:%S"),
                          'status': "1"}
             orders.insert_one(new_order)
-            new_order = {'order': order_number, 'user': token, 'time': datetime.strftime(datetime.now(), "%H:%M:%S"),
+            new_order = {'order': str_order, 'user': token, 'time': datetime.strftime(datetime.now(), "%H:%M:%S"),
                          'status': "1"}
             print(new_order)
             return jsonify(new_order)
@@ -77,16 +80,18 @@ def make_order(token):
         return 'no user found'
 
 
-
 @app.route('/addtable/<token>/<order>/<table>')
 def add_table(token, order, table):
+    print(order)
+    print(token)
     if orders.find_one({'user': token, 'order': order}) is not None:
+        print("here")
         orders.update_one({'$and': [{'order': order}, {'user': token}]}, {'$set': {'table': table}})
-        for order in orders.find({'$and': [{'order': order}, {'user': token}]}):
+        for order in orders.find({'$and': [{'order': order}, {'user': token}]}, projection={'_id': False}):
+            print(order)
             return jsonify(order)
     else:
         return 'no order exist'
-
 
 
 serve(app, host='0.0.0.0', port=8000)
