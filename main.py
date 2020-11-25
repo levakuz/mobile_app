@@ -16,9 +16,7 @@ app = Flask(__name__)
 order_number = 0
 
 
-@app.route('/')
-def home():
-    return "<h1>Hello wrold!</h1>"
+
 
 
 @app.route('/food')
@@ -59,7 +57,7 @@ def login(username, password):
         return 'false username'
 
 
-@app.route('/makeorder/<token>')
+@app.route('/makeorder/<order>')
 def make_order(token):
     global order_number
     order_number += 1
@@ -80,7 +78,7 @@ def make_order(token):
         return 'no user found'
 
 
-@app.route('/addtable/<token>/<order>/<table>')
+@app.route('/addtable/<order>/<table>')
 def add_table(token, order, table):
     print(order)
     print(token)
