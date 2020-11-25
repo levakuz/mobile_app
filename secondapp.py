@@ -181,7 +181,7 @@ def robot_db_response_user(ch, method, properties, body):
                      body=json.dumps(robots_list))
 
 
-@app.route('/restaurants/<city>')
+@app.route('/dodo/restaurants/<city>')
 def get_restaurant_list(city):
     restaurant_list = []
     if city == "Санкт-Петербург":
