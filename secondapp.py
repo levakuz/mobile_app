@@ -240,6 +240,12 @@ def check_robot(order, robot):
                     delivery_mode=2,
                 ))
     users.update_one({'$and': [{'status': '4'}, {'order': order}, {'robot_id': robot}]}, {'$set': {'status': '5'}})
+    for user in users.find({'$and': [{'status': '5'}, {'order': order}, {'robot_id': robot}]},
+                           projection={'_id': False, 'cashbox': False}):
+        if user is None:
+            return 'error'
+        else:
+            return jsonify(user)
 
 
 credentials = pika.PlainCredentials('admin', 'admin')
