@@ -218,9 +218,9 @@ def add_table(order, table):
         return 'no order exist'
 
 
-@app.route('/checkrobot/<order>/<table>')
-def check_robot(order, table):
-    for user in users.find({'$and': [{'status': '4'}, {'order': order}, {'table': table}]},
+@app.route('/checkrobot/<order>/<robot>')
+def check_robot(order, robot):
+    for user in users.find({'$and': [{'status': '4'}, {'order': order}, {'robot_id': robot}]},
                            projection={'_id': False, 'cashbox': False}):
         print(user)
         if user is None:
@@ -239,7 +239,7 @@ def check_robot(order, table):
                 properties=pika.BasicProperties(
                     delivery_mode=2,
                 ))
-    users.update_one({'$and': [{'status': '4'}, {'order': order}, {'table': table}]}, {'$set': {'status': '5'}})
+    users.update_one({'$and': [{'status': '4'}, {'order': order}, {'robot_id': robot}]}, {'$set': {'status': '5'}})
 
 
 credentials = pika.PlainCredentials('admin', 'admin')
