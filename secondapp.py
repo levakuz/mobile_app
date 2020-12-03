@@ -71,15 +71,7 @@ def check_robot(order, robot):
                 properties=pika.BasicProperties(
                     delivery_mode=2,
                 ))
-    else:
-        print('here2')
-        channel.basic_publish(
-            exchange='',
-            routing_key="robot_delivery_order",
-            body='True',
-            properties=pika.BasicProperties(
-                delivery_mode=2,
-            ))
+
     users.update_one({'$and': [{'status': '4'}, {'order': order}, {'robot_id': robot}]}, {'$set': {'status': '5'}})
     for user in users.find({'$and': [{'status': '5'}, {'order': order}, {'robot_id': robot}]},
                            projection={'_id': False, 'cashbox': False}):
@@ -91,7 +83,22 @@ def check_robot(order, robot):
         return jsonify(new_user)
 
 
+@app.route('/dodo/robot_go_back/<order>/<table>')
+def robot_go_back(order, table):
+    if users.find_one({'$and': [{'status': '5'}, {'order': order}, {'table': table}]},
+                      projection={'_id': False, 'cashbox': False}) is None:
+        return 'False'
 
+    else:
+        print('here2')
+        channel.basic_publish(
+            exchange='',
+            routing_key="robot_delivery_order",
+            body='True',
+            properties=pika.BasicProperties(
+                delivery_mode=2,
+            ))
+        return 'True'
 
 
 
