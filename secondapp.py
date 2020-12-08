@@ -15,7 +15,7 @@ credentials = pika.PlainCredentials('admin', 'admin')
 connection = pika.BlockingConnection(pika.ConnectionParameters('95.181.230.223',
                                                                5672,
                                                                '/',
-                                                               credentials,heartbeat=600, blocked_connection_timeout=300))
+                                                               credentials,heartbeat=0, blocked_connection_timeout=0))
 
 
 
